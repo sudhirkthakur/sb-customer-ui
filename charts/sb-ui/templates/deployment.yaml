@@ -1,0 +1,111 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Release.Namespace | default .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ (printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_")) | trunc 63 }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.rollingUpdate.maxUnavailable | default "25%" }} # maxUnavailable define how many pods can be unavailable
+      maxSurge: {{ .Values.rollingUpdate.maxSurge | default "50%" }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        release: {{ .Release.Name }}
+        component: {{ .Values.labels.component }}
+        environment: {{ .Values.labels.environment }}
+      annotations:
+        {{- if .Values.monitoring.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/path: {{ .Values.monitoring.path | quote }}
+        prometheus.io/port: {{ .Values.monitoring.port | quote }}
+        prometheus.io/container: {{ .Release.Name }}
+        {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include  (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecret }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image }}
+        {{- if .Values.readiness.enabled }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readiness.endpoint }}
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: {{ .Values.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.readiness.timeoutSeconds }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.readiness.endpoint }}
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: {{ .Values.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.readiness.timeoutSeconds }}
+        {{- end }}
+        {{- if (or (and .Values.config.enabled .Values.config.isFile) (and .Values.secrets.enabled .Values.secrets.isFile)) }}
+          volumeMounts:
+          {{- if (and .Values.config.enabled .Values.config.isFile) }}
+            - name: config-volume
+              mountPath: /opt/app/config
+          {{- end }}
+          {{- if (and .Values.secrets.enabled .Values.secrets.isFile) }}
+            - name: secret-volume
+              mountPath: /opt/app/config
+              readOnly: true
+          {{- end }}
+        {{- end }}
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu | default "0.5" }}
+              memory: {{ .Values.resources.limits.memory | default "1Gi" }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu | default "0.02" }}
+              memory: {{ .Values.resources.requests.memory | default "128Mi"}}
+          env:
+            - name: BUILD_VERSION
+              value: {{ .Chart.Version }}
+            - name: APP_VERSION
+              value: {{ .Values.tag }}
+            - name: CONTEXT_ROOT
+            {{- if (eq (.Release.Namespace | default .Values.namespace) "default") }}
+              value: /{{- (print " " .Chart.Name) }}
+            {{- else }}
+              value: /{{ (print (.Release.Namespace | default .Values.namespace) "/" .Chart.Name) }}
+            {{- end }}
+          {{- if (or (and .Values.config.enabled (not .Values.config.isFile)) (and .Values.secrets.enabled (not .Values.secrets.isFile))) }}
+          envFrom:
+          {{- if (and .Values.secrets.enabled (not .Values.secrets.isFile)) }}
+            - secretRef:
+                name: {{ $.Release.Name }}-secrets
+          {{- end }}
+          {{- if (and .Values.config.enabled (not .Values.config.isFile)) }}
+            - configMapRef:
+                name: {{ $.Release.Name }}-configmap
+          {{- end }}
+          {{- end }}
+            - secretRef:
+                name: app-secret
+      {{- if (or (and .Values.config.enabled .Values.config.isFile) (and .Values.secrets.enabled .Values.secrets.isFile)) }}
+      volumes:
+      {{- if (and .Values.config.enabled .Values.config.isFile) }}
+        - name: config-volume
+          configMap:
+            name: {{ .Release.Name }}-configmap
+      {{- end }}
+      {{- if (and .Values.secrets.enabled .Values.secrets.isFile) }}
+        - name: secret-volume
+          secret:
+            secretName: {{ .Release.Name }}-secrets
+      {{- end }}
+      {{- end }}

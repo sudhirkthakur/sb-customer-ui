@@ -1,0 +1,264 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+<div class="container">
+  <h2>Add Customer Records</h2>
+  <div class="panel-group">
+
+    <div class="panel panel-primary">
+      <div class="panel-heading">Customer Basic Informtion</div>
+      <div class="panel-body">
+        <div class="row">
+
+         <div class="col-sm-2"><label for="firstName">First Name</label></div>
+         <div class="col-sm-2">
+           <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+           <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+               <div *ngIf="f.firstName.errors.required">First Name is required</div>
+           </div>
+         </div>
+         <div class="col-sm-2"><label for="middleName">Middle Name</label></div>
+         <div class="col-sm-2">
+           <input type="text" formControlName="middleName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.middleName.errors }" />
+           <div *ngIf="submitted && f.middleName.errors" class="invalid-feedback">
+               <div *ngIf="f.middleName.errors.required">Middle Name is required</div>
+           </div>
+         </div>
+         <div class="col-sm-2"><label for="lastName">Last Name</label></div>
+         <div class="col-sm-2">
+           <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+           <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+               <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+           </div>
+         </div>
+        </div>
+        <br>
+        <div class="row">
+         <div class="col-sm-2"><label for="dateOfBirth">Date of Birth</label></div>
+         <div class="col-sm-2">
+           <input type="text" bsDatepicker formControlName="dateOfBirth" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dateOfBirth.errors }" />
+           <div *ngIf="submitted && f.dateOfBirth.errors" class="invalid-feedback">
+               <div *ngIf="f.dateOfBirth.errors.required">Date of Birth is required</div>
+           </div>
+         </div>
+         <div class="col-sm-2"><label for="mobileNumber">Mobile Number</label></div>
+         <div class="col-sm-2">
+           <input type="text" formControlName="mobileNumber" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mobileNumber.errors }" />
+           <div *ngIf="submitted && f.mobileNumber.errors" class="invalid-feedback">
+               <div *ngIf="f.mobileNumber.errors.required">Mobile Number is required</div>
+           </div>
+         </div>
+         <div class="col-sm-2"><label for="gender">Gender</label></div>
+         <div class="col-sm-2">
+           <select formControlName="gender" >
+              <option [value]="gender" *ngFor="let gender of genders" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.gender.errors }" > {{gender}}</option>
+            </select>
+
+           <!-- <input type="text" formControlName="gender" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.gender.errors }" /> -->
+           <div *ngIf="submitted && f.gender.errors" class="invalid-feedback">
+               <div *ngIf="f.gender.errors.required">Gender is required</div>
+           </div>
+         </div>
+        </div>
+        <br>
+        <div class="row">
+
+         <div class="col-sm-2"><label for="countryOfBirth">Country of Birth</label></div>
+         <div class="col-sm-2">
+           <input type="text" formControlName="countryOfBirth" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.countryOfBirth.errors }" />
+           <div *ngIf="submitted && f.countryOfBirth.errors" class="invalid-feedback">
+               <div *ngIf="f.countryOfBirth.errors.required">Country of Birth is required</div>
+           </div>
+         </div>
+         <div class="col-sm-2"><label for="countryofResidence">Country of Residence</label></div>
+         <div class="col-sm-2">
+           <input type="text" formControlName="countryofResidence" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.countryofResidence.errors }" />
+           <div *ngIf="submitted && f.countryofResidence.errors" class="invalid-feedback">
+               <div *ngIf="f.countryofResidence.errors.required">Country of Residence is required</div>
+           </div>
+         </div>
+         <div class="col-sm-2"><label for="customerSegment">Customer Segment</label></div>
+         <div class="col-sm-2">
+           <input type="text" formControlName="customerSegment" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.customerSegment.errors }" />
+           <div *ngIf="submitted && f.customerSegment.errors" class="invalid-feedback">
+               <div *ngIf="f.customerSegment.errors.required">Customer Segment is required</div>
+           </div>
+         </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+
+    <div class="row">
+     <div class="col-sm-6">
+       <div formArrayName="addresses">
+       <div *ngFor="let address of registerForm.controls.addresses.controls; let i=index" class="panel panel-success">
+         <div class="panel-heading">Customer Home Address</div>
+         <div class="panel-body" [formGroupName]="i">
+           <div class="row">
+            <div class="col-sm-4"><label for="addrLine1">Address line1</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="addrLine1" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine1.errors }" />
+              <div *ngIf="submitted && f.addrLine1.errors" class="invalid-feedback">
+                  <div *ngIf="f.addrLine1.errors.required">Address line1 is required</div>
+              </div>
+            </div>
+
+            <div class="col-sm-4"><label for="addrLine2">Address line2</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="addrLine2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine2.errors }" />
+              <div *ngIf="submitted && f.addrLine2.errors" class="invalid-feedback">
+                  <div *ngIf="f.addrLine2.errors.required">Address line2 is required</div>
+              </div>
+            </div>
+
+            <div class="col-sm-4"><label for="addrLine3">Address line3</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="addrLine3" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine3.errors }" />
+              <div *ngIf="submitted && f.addrLine3.errors" class="invalid-feedback">
+                  <div *ngIf="f.addrLine3.errors.required">Address line3 is required</div>
+              </div>
+            </div>
+
+            <div class="col-sm-4"><label for="addrLine4">Address line4</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="addrLine4" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine4.errors }" />
+              <div *ngIf="submitted && f.addrLine4.errors" class="invalid-feedback">
+                  <div *ngIf="f.addrLine4.errors.required">Address line4 is required</div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-4"><label for="countryCode">Country Code</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="countryCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.countryCode.errors }" />
+              <div *ngIf="submitted && f.countryCode.errors" class="invalid-feedback">
+                  <div *ngIf="f.countryCode.errors.required">Country Code is required</div>
+              </div>
+            </div>
+
+            <div class="col-sm-4"><label for="zipCode">Zip Code</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="zipCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" />
+              <div *ngIf="submitted && f.zipCode.errors" class="invalid-feedback">
+                  <div *ngIf="f.zipCode.errors.required">Zip Code is required</div>
+              </div>
+            </div>
+
+            <div class="col-sm-4"><label for="state">State</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.state.errors }" />
+              <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+                  <div *ngIf="f.state.errors.required">State is required</div>
+              </div>
+            </div>
+
+            <div class="col-sm-4"><label for="city">City</label></div>
+            <div class="col-sm-8">
+              <input type="text" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+              <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                  <div *ngIf="f.city.errors.required">City is required</div>
+              </div>
+            </div>
+
+
+           </div>
+
+         </div>
+       </div>
+       </div>
+
+     </div>
+     <div class="col-sm-6">
+
+       <div formArrayName="addresses">
+       <div *ngFor="let address of registerForm.controls.addresses.controls; let i=index" class="panel panel-info">
+         <div class="panel-heading">Customer Office Address</div>
+         <div class="panel-body" [formGroupName]="i">
+           <div class="row">
+             <div class="col-sm-4"><label for="addrLine1">Address line1</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="addrLine1" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine1.errors }" />
+               <div *ngIf="submitted && f.addrLine1.errors" class="invalid-feedback">
+                   <div *ngIf="f.addrLine1.errors.required">Address line1 is required</div>
+               </div>
+             </div>
+
+             <div class="col-sm-4"><label for="addrLine2">Address line2</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="addrLine2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine2.errors }" />
+               <div *ngIf="submitted && f.addrLine2.errors" class="invalid-feedback">
+                   <div *ngIf="f.addrLine2.errors.required">Address line2 is required</div>
+               </div>
+             </div>
+
+             <div class="col-sm-4"><label for="addrLine3">Address line3</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="addrLine3" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine3.errors }" />
+               <div *ngIf="submitted && f.addrLine3.errors" class="invalid-feedback">
+                   <div *ngIf="f.addrLine3.errors.required">Address line3 is required</div>
+               </div>
+             </div>
+
+             <div class="col-sm-4"><label for="addrLine4">Address line4</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="addrLine4" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.addrLine4.errors }" />
+               <div *ngIf="submitted && f.addrLine4.errors" class="invalid-feedback">
+                   <div *ngIf="f.addrLine4.errors.required">Address line4 is required</div>
+               </div>
+             </div>
+
+
+             <div class="col-sm-4"><label for="countryCode">Country Code</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="countryCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.countryCode.errors }" />
+               <div *ngIf="submitted && f.countryCode.errors" class="invalid-feedback">
+                   <div *ngIf="f.countryCode.errors.required">Country Code is required</div>
+               </div>
+             </div>
+
+             <div class="col-sm-4"><label for="zipCode">Zip Code</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="zipCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" />
+               <div *ngIf="submitted && f.zipCode.errors" class="invalid-feedback">
+                   <div *ngIf="f.zipCode.errors.required">Zip Code is required</div>
+               </div>
+             </div>
+
+             <div class="col-sm-4"><label for="state">State</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.state.errors }" />
+               <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+                   <div *ngIf="f.state.errors.required">State is required</div>
+               </div>
+             </div>
+
+             <div class="col-sm-4"><label for="city">City</label></div>
+             <div class="col-sm-8">
+               <input type="text" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+               <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                   <div *ngIf="f.city.errors.required">City is required</div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+       </div>
+     </div>
+   </div>
+  </div>
+</div>
+
+<div class="container">
+<div class="row">
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Register
+        </button>
+    </div>
+  </div>
+  </div>
+</form>

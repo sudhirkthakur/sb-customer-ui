@@ -1,0 +1,101 @@
+# Default Values
+# -------------------------------------------------------------------------------
+# Declare variables to be passed into your templates.
+# The values here represent defaults and should work out of the box if possible,
+# secrets notwithstanding.
+# ------------------------------------------------------------------------------
+# Some values may contain placeholders that are overwritten by CI/CD tooling.
+# ------------------------------------------------------------------------------
+# View templates/ to see how these values are propagated throughout the chart
+# and make updates if you add new keys or modify key names
+# ------------------------------------------------------------------------------
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#replicas
+replicaCount: 1
+
+# https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+# similar to a CloudFoundry Space
+namespace: sb-demo
+
+# docker image configuration
+# will be set to digest of your img by CI/CD tooling and committed back to repo
+image: registry.ng.bluemix.net/bitl/sb-ui
+imagePullSecret: sb-customer-secret
+
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "2"
+  requests: {}
+
+test:
+  enabled: false
+  health: /health
+  image: registry.ng.bluemix.net/bitl/sb-ui-smoke-test
+
+monitoring:
+  # enable prometheus to scrape metrics from your service/application
+  enabled: false
+  port: 80
+  path: /metrics
+
+readiness:
+  #enable a readiness probe for your deployment
+  enabled: false
+  endpoint: /health
+  initialDelaySeconds: 60
+  periodSeconds: 15
+  timeoutSeconds: 5
+
+rollingUpdate:
+  maxUnavailable: 25%
+  maxSurge: 50%
+
+service:
+  name: sb-ui-sb-demo
+  port: 80
+
+labels:
+  component: sb-customer
+  environment: demo
+
+
+secrets:
+  enabled: false
+  isFile: false
+  # name of the file to mount to pod as volume
+  # filename:
+  data:
+
+# define the plain-text configuration your application needs
+# ------------------------------------------------------------------------------
+# enabled:  If there is plain-text configuration or not.
+# isFile:   If the configuration should be passed in as a file or ENV VARs
+# filename: If it is a file, what should the name of the file your app will look at be?
+# data:     The configuration values themselves. For ENV VARs the templates expect a list of Key/Value pairs.
+#           For files any yaml or json structure is valid.
+config:
+  enabled: true
+  isFile: false
+  # name of the file to mount to pod as volume
+  # filename:
+  data:
+    IAM_URL: https://iam.ng.bluemix.net
+
+# these are the global or shared configurations for your org
+# things like database credentials you get from Vault.
+# a starter for your orgs global values can be found in this directory at
+# global.$org.values.yaml.  you should take that object, remove what you dont use,
+# and place it here so that you only have a single values.yaml
+global:
+  canary: false
+  config:
+    enabled: true
+    isFile: false
+    data:
+      baz: bar
+  secrets:
+    enabled: false
+    isFile: false
+    data:
+      DATABASE_PASSWORD: dont-commit-production-secrets

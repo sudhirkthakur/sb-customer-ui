@@ -1,0 +1,102 @@
+
+
+
+
+<div class="container">
+<div class="panel-group" *ngFor="let customer of customers">
+  <div class="panel panel-info">
+<div class="panel-heading">Customer Records</div>
+
+  <div class="panel panel-success">
+    <div class="panel-heading">Customer Personal Details</div>
+    <div class="panel-body">
+      <div class="row">
+
+        <div class="col-sm-3">First Name : {{ customer.doc.firstName }}</div>
+        <div class="col-sm-3">Middle Name : {{ customer.doc.middleName }}</div>
+        <div class="col-sm-3">Last Name : {{ customer.doc.lastName }}</div>
+        <div class="col-sm-3">Date of Birth : {{ customer.doc.dateOfBirth }}</div>
+
+      </div>
+      <div class="row">
+
+        <div class="col-sm-3">Mobile Number : {{ customer.doc.mobileNumber }}</div>
+        <div class="col-sm-3">Gender : {{ customer.doc.gender }}</div>
+        <div class="col-sm-3">Birth Country : {{ customer.doc.countryOfBirth }}</div>
+        <div class="col-sm-3">Residence Country : {{ customer.doc.countryofResidence }}</div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-3">Customer Number : {{ customer.doc.customerNumber }}</div>
+        <div class="col-sm-3">Customer Segment : {{ customer.doc.customerSegment }}</div>
+        <div class="col-sm-3"></div>
+        <div class="col-sm-3"></div>
+      </div>
+
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Home Address</div>
+    <div class="panel-body">
+      <div class="row">
+
+        <div class="col-sm-3">Address Lane1 : {{ customer.doc.addresses[0].addrLine1 }}</div>
+        <div class="col-sm-3">Address Lane2 : {{ customer.doc.addresses[0].addrLine2 }}</div>
+        <div class="col-sm-3">Address Lane3 : {{ customer.doc.addresses[0].addrLine3 }}</div>
+        <div class="col-sm-3">Address Lane4 : {{ customer.doc.addresses[0].addrLine4 }}</div>
+      </div>
+      <div class="row">
+
+        <div class="col-sm-3">Country Code : {{ customer.doc.addresses[0].countryCode }}</div>
+        <div class="col-sm-3">Zip Code : {{ customer.doc.addresses[0].zipCode }}</div>
+        <div class="col-sm-3">State : {{ customer.doc.addresses[0].state }}</div>
+        <div class="col-sm-3">City : {{ customer.doc.addresses[0].city }}</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="panel panel-warning">
+    <div class="panel-heading">Office Address</div>
+    <div class="panel-body">
+      <div class="row">
+
+        <div class="col-sm-3">Address Lane1 : {{ customer.doc.addresses[1].addrLine1 }}</div>
+        <div class="col-sm-3">Address Lane2 : {{ customer.doc.addresses[1].addrLine2 }}</div>
+        <div class="col-sm-3">Address Lane3 : {{ customer.doc.addresses[1].addrLine3 }}</div>
+        <div class="col-sm-3">Address Lane4 : {{ customer.doc.addresses[1].addrLine4 }}</div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">Country Code : {{ customer.doc.addresses[1].countryCode }}</div>
+        <div class="col-sm-3">Zip Code : {{ customer.doc.addresses[1].zipCode }}</div>
+        <div class="col-sm-3">State : {{ customer.doc.addresses[1].state }}</div>
+        <div class="col-sm-3">City : {{ customer.doc.addresses[1].city }}</div>
+
+      </div>
+
+    </div>
+
+  </div>
+    <div class="row">
+
+      <div class="col-sm-1">
+        <div class="form-group">
+          <button type="button" (click)="onUpdate(customer)" class="btn btn-primary btn-block">Update</button>
+        </div>
+
+      </div>
+
+      <div class="col-sm-1">
+        <div class="form-group">
+            <button type="button" (click)="onDelete(customer.doc._id,customer.doc._rev)" class="btn btn-primary btn-danger">Delete</button>
+        </div>
+
+      </div>
+
+    </div>
+
+</div>
+
+</div>
+</div>

@@ -1,0 +1,23 @@
+{{- if (not .Values.global.canary) }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  namespace: {{ .Release.Namespace | default .Values.namespace }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ (printf "%s-%s" .Chart.Name (.Chart.Version | replace "+" "_")) | trunc 63 }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    prometheus.io/probe: 'true'
+spec:
+  ports:
+  - port: {{ .Values.service.port }}
+    protocol: TCP
+    name: {{ .Values.service.name }}
+  type: ClusterIP
+  selector:
+    app: {{ .Chart.Name }}
+    release: {{ .Release.Name }}
+{{- end }}

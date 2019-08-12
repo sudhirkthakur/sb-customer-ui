@@ -1,0 +1,70 @@
+apiVersion: skaffold/v1alpha3
+kind: Config
+build:
+  artifacts:
+  - imageName: registry.ng.bluemix.net/bitl/sb-ui
+    workspace: .
+    docker: {}
+  tagPolicy:
+    sha256: {}
+  local: {}
+deploy:
+  helm:
+    releases:
+    - name: sb-ui-sb-demo
+      chartPath: charts/sb-ui
+      valuesFiles: []
+      values:
+        image: registry.ng.bluemix.net/bitl/sb-ui
+      namespace: sb-demo
+      version: ""
+      setValues:
+        config.data.IAM_URL: https://iam.ng.bluemix.net
+        labels.environment: demo
+      setValueTemplates: {}
+      wait: true
+      recreatePods: false
+      overrides: {}
+      packaged: null
+      imageStrategy:
+        fqn: null
+        helm: null
+profiles:
+- name: no-push
+  build:
+    artifacts:
+    - imageName: registry.ng.bluemix.net/bitl/sb-ui
+      workspace: .
+      docker: {}
+    tagPolicy:
+      sha256: {}
+    local:
+      skipPush: true
+- name: sb-ui-deployment
+  build:
+    artifacts:
+    - imageName: registry.ng.bluemix.net/bitl/sb-ui
+      workspace: .
+      docker: {}
+    tagPolicy:
+      sha256: {}
+  deploy:
+    helm:
+      releases:
+      - name: sb-ui-sb-demo
+        chartPath: charts/sb-ui
+        valuesFiles: []
+        values:
+          image: registry.ng.bluemix.net/bitl/sb-ui
+        namespace: sb-demo
+        version: ""
+        setValues:
+          config.data.IAM_URL: https://iam.ng.bluemix.net
+        setValueTemplates: {}
+        wait: true
+        recreatePods: false
+        overrides: {}
+        packaged: null
+        imageStrategy:
+          fqn: null
+          helm: null
