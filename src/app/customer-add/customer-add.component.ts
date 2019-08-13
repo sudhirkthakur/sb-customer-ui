@@ -21,7 +21,7 @@ export class CustomerAddComponent implements OnInit {
 
   genders = ['Male', 'Female']
 
-
+  submitted = false;
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -56,11 +56,14 @@ export class CustomerAddComponent implements OnInit {
 
 get f() { return this.registerForm.controls; }
 
+
+
+
 onSubmit() {
+this.submitted = true;
 
+  const control = <FormArray>this.registerForm.controls['addresses']['controls'];
 
-  const control = <FormArray>this.registerForm.controls['addresses'];
-  
   control.push(this.initAddress());
 
 

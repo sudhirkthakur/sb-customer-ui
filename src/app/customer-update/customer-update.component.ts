@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
@@ -20,8 +20,28 @@ export class CustomerUpdateComponent implements OnInit {
   registerForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,private router: Router,private cs: CustomersService, private route: ActivatedRoute) { }
-
+  submitted = false;
   genders = ['Male', 'Female']
+
+
+  addrLine1: any;
+  addrLine2: any;
+  addrLine3: any;
+  addrLine4: any;
+  countryCode: string;
+  zipCode: number;
+  state: string;
+  city: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dateOfBirth: string;
+  mobileNumber: number;
+  gender: string;
+  countryOfBirth: string;
+  countryofResidence: string;
+  customerSegment: string;
+  
 
   ngOnInit() {
 
@@ -107,7 +127,7 @@ export class CustomerUpdateComponent implements OnInit {
 
 
   onSubmit() {
-
+this.submitted = true;
 
     const control = <FormArray>this.registerForm.controls['addresses'];
     control.push(this.initAddress());
