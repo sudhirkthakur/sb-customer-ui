@@ -19,7 +19,7 @@ namespace: invoicing-dev
 
 # docker image configuration
 # will be set to digest of your img by CI/CD tooling and committed back to repo
-image: registry.ng.bluemix.net/bitlcr/sb-ui
+image: us.icr.io/bitlcr/sb-ui
 imagePullSecret: bitl-secret
 
 resources:
@@ -31,7 +31,7 @@ resources:
 test:
   enabled: false
   health: /health
-  image: registry.ng.bluemix.net/bitlcr/sb-ui-smoke-test
+  image: us.icr.io/bitlcr/sb-ui-smoke-test
 
 monitoring:
   # enable prometheus to scrape metrics from your service/application
