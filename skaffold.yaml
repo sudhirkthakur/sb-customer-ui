@@ -2,7 +2,7 @@ apiVersion: skaffold/v1alpha3
 kind: Config
 build:
   artifacts:
-  - imageName: registry.ng.bluemix.net/bitl/sb-ui
+  - imageName: registry.ng.bluemix.net/bitlcr/sb-ui
     workspace: .
     docker: {}
   tagPolicy:
@@ -15,8 +15,8 @@ deploy:
       chartPath: charts/sb-ui
       valuesFiles: []
       values:
-        image: registry.ng.bluemix.net/bitl/sb-ui
-      namespace: sb-demo
+        image: registry.ng.bluemix.net/bitlcr/sb-ui
+      namespace: invoicing-dev
       version: ""
       setValues:
         config.data.IAM_URL: https://iam.ng.bluemix.net
@@ -33,7 +33,7 @@ profiles:
 - name: no-push
   build:
     artifacts:
-    - imageName: registry.ng.bluemix.net/bitl/sb-ui
+    - imageName: registry.ng.bluemix.net/bitlcr/sb-ui
       workspace: .
       docker: {}
     tagPolicy:
@@ -43,7 +43,7 @@ profiles:
 - name: sb-ui-deployment
   build:
     artifacts:
-    - imageName: registry.ng.bluemix.net/bitl/sb-ui
+    - imageName: registry.ng.bluemix.net/bitlcr/sb-ui
       workspace: .
       docker: {}
     tagPolicy:
@@ -55,8 +55,8 @@ profiles:
         chartPath: charts/sb-ui
         valuesFiles: []
         values:
-          image: registry.ng.bluemix.net/bitl/sb-ui
-        namespace: sb-demo
+          image: registry.ng.bluemix.net/bitlcr/sb-ui
+        namespace: invoicing-dev
         version: ""
         setValues:
           config.data.IAM_URL: https://iam.ng.bluemix.net
