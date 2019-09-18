@@ -2,7 +2,7 @@ apiVersion: skaffold/v1alpha3
 kind: Config
 build:
   artifacts:
-  - imageName: registry.ng.bluemix.net/bitlcr/sb-ui
+  - imageName: us.icr.io/bitlcr/sb-ui
     workspace: .
     docker: {}
   tagPolicy:
@@ -15,7 +15,7 @@ deploy:
       chartPath: charts/sb-ui
       valuesFiles: []
       values:
-        image: registry.ng.bluemix.net/bitlcr/sb-ui
+        image: us.icr.io/bitlcr/sb-ui
       namespace: invoicing-dev
       version: ""
       setValues:
@@ -33,7 +33,7 @@ profiles:
 - name: no-push
   build:
     artifacts:
-    - imageName: registry.ng.bluemix.net/bitlcr/sb-ui
+    - imageName: us.icr.io/bitlcr/sb-ui
       workspace: .
       docker: {}
     tagPolicy:
@@ -43,7 +43,7 @@ profiles:
 - name: sb-ui-deployment
   build:
     artifacts:
-    - imageName: registry.ng.bluemix.net/bitlcr/sb-ui
+    - imageName: us.icr.io/bitlcr/sb-ui
       workspace: .
       docker: {}
     tagPolicy:
@@ -55,7 +55,7 @@ profiles:
         chartPath: charts/sb-ui
         valuesFiles: []
         values:
-          image: registry.ng.bluemix.net/bitlcr/sb-ui
+          image: us.icr.io/bitlcr/sb-ui
         namespace: invoicing-dev
         version: ""
         setValues:
