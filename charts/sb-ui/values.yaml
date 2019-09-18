@@ -15,12 +15,12 @@ replicaCount: 1
 
 # https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
 # similar to a CloudFoundry Space
-namespace: sb-demo
+namespace: invoicing-dev
 
 # docker image configuration
 # will be set to digest of your img by CI/CD tooling and committed back to repo
-image: registry.ng.bluemix.net/bitl/sb-ui
-imagePullSecret: sb-customer-secret
+image: registry.ng.bluemix.net/bitlcr/sb-ui
+imagePullSecret: bitl-secret
 
 resources:
   limits:
@@ -31,7 +31,7 @@ resources:
 test:
   enabled: false
   health: /health
-  image: registry.ng.bluemix.net/bitl/sb-ui-smoke-test
+  image: registry.ng.bluemix.net/bitlcr/sb-ui-smoke-test
 
 monitoring:
   # enable prometheus to scrape metrics from your service/application
